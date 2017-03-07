@@ -59,7 +59,7 @@
   (lambda ()
     (linum-mode 1)))
 ;;set color theme
-(color-theme-sanityinc-solarized-light)
+(color-theme-sanityinc-solarized-dark)
 
 ;; no startup msg  
 (setq inhibit-startup-message t)        ; Disable startup message 
@@ -113,3 +113,10 @@
           `((".*" ,temporary-file-directory t)))
 
 (global-set-key (kbd "C-c g") 'magit-status)
+
+(defun count-words (&optional begin end)
+  "count words between BEGIN and END (region); if no region defined, count words in buffer"
+  (interactive "r")
+  (let ((b (if mark-active begin (point-min)))
+      (e (if mark-active end (point-max))))
+    (message "Word count: %s" (how-many "\\w+" b e))))
