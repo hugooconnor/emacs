@@ -129,5 +129,6 @@
 
 ;; Auto-complete
 (ac-config-default)
+(add-hook 'eshell-mode-hook 'auto-complete-mode)
 
 
