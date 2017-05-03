@@ -120,3 +120,14 @@
   (let ((b (if mark-active begin (point-min)))
       (e (if mark-active end (point-max))))
     (message "Word count: %s" (how-many "\\w+" b e))))
+
+;; Make windmove work in org-mode:
+(add-hook 'org-shiftup-final-hook 'windmove-up)
+(add-hook 'org-shiftleft-final-hook 'windmove-left)
+(add-hook 'org-shiftdown-final-hook 'windmove-down)
+(add-hook 'org-shiftright-final-hook 'windmove-right)
+
+;; Auto-complete
+(ac-config-default)
+
+
