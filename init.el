@@ -155,10 +155,3 @@
 (add-hook 'before-save-hook 'tide-format-before-save)
 
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-(add-hook 'term-setup-hook
-          '(lambda ()
-             (define-key function-key-map "\e[1;3A" [S-up])
-             (define-key function-key-map "\e[1;3B" [S-down])
-             (define-key function-key-map "\e[1;3C" [S-right])
-             (define-key function-key-map "\e[1;3D" [S-left])))
