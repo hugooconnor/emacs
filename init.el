@@ -1,5 +1,6 @@
 (split-window-right)
 (split-window-vertically)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -76,7 +77,7 @@
 (tool-bar-mode 0)
 
 (load "~/.emacs.d/eshell/eshell-customisation.el")
-(projectile-global-mode)
+:;(projectile-global-mode)
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq-default flycheck-disabled-checkers
@@ -100,8 +101,10 @@
 (defun toggle-comment-on-line ()
   "comment or uncomment current line"
   (interactive)
-  (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
-(global-set-key (kbd "C-a") 'toggle-comment-on-line)
+  (if (region-active-p)
+      (comment-or-uncomment-region (region-beginning) (region-end))
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
+(global-set-key (kbd "C-;") 'toggle-comment-on-line)
 
 (setq-default indent-tabs-mode nil)
 
@@ -132,3 +135,30 @@
 (add-hook 'eshell-mode-hook 'auto-complete-mode)
 
 
+;; TIDE
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+(add-hook 'before-save-hook 'tide-format-before-save)
+
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+(add-hook 'term-setup-hook
+          '(lambda ()
+             (define-key function-key-map "\e[1;3A" [S-up])
+             (define-key function-key-map "\e[1;3B" [S-down])
+             (define-key function-key-map "\e[1;3C" [S-right])
+             (define-key function-key-map "\e[1;3D" [S-left])))
